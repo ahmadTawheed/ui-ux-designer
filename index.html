@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أحمد محمد - مصمم UI/UX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo for Arabic, Inter for general -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="https://mir-s3-cdn-cf.behance.net/user/230/f312d21937588581.683dfbe05e90e.jpg" />
+    <!-- html2pdf.js for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif; /* Apply Cairo for Arabic text */
+            background-color: #f4f7f6; /* Light gray background */
+            color: #333;
+            direction: rtl; /* Right-to-left for Arabic */
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50; /* Darker blue for headings */
+            font-weight: 700; /* Bolder for Cairo font */
+        }
+        .section-title {
+            border-bottom: 2px solid #3498db; /* Blue underline for sections */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            /* Animation for section titles */
+            animation: slideInFromRight 1s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* Space between icon and text */
+        }
+        .section-title i {
+            color: #3498db; /* Icon color */
+            font-size: 1.5rem;
+        }
+        .skill-badge {
+            background-color: #ecf0f1; /* Light gray for skill badges */
+            color: #34495e; /* Dark gray text */
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem; /* Adjust margin for RTL */
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            transition: all 0.3s ease; /* Smooth transition for hover */
+        }
+        .skill-badge:hover {
+            background-color: #3498db; /* Blue on hover */
+            color: #ffffff; /* White text on hover */
+            transform: translateY(-3px); /* Slight lift on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .project-item {
+            border-right: 4px solid #3498db; /* Adjust border for RTL */
+            padding-right: 1rem; /* Adjust padding for RTL */
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease; /* Smooth transition for hover */
+        }
+        .project-item:hover {
+            background-color: #f9f9f9; /* Light background on hover */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(-5px); /* Slight shift on hover */
+        }
+        .contact-info a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+            color: #2980b9; /* Darker blue on hover */
+        }
+
+        /* Language toggle buttons */
+        .lang-toggle-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .lang-toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .lang-toggle-btn.active {
+            background-color: #2c3e50;
+        }
+
+        /* Keyframe animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Apply fade-in to body for initial load */
+        body {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Hide content based on language */
+        .lang-en { display: none; }
+        .lang-ar { display: block; }
+        body[lang="en"] .lang-en { display: block; }
+        body[lang="en"] .lang-ar { display: none; }
+        body[lang="ar"] .lang-ar { display: block; }
+        body[lang="ar"] .lang-en { display: none; }
+
+        /* PDF download button styling */
+        .download-btn {
+            background-color: #2ecc71; /* Green color */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+        }
+        .download-btn:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="p-4" lang="ar">
+    <div class="flex justify-center gap-4 mb-6">
+        <button class="lang-toggle-btn active" onclick="setLanguage('ar', this)">
+            <i class="fas fa-language"></i> العربية
+        </button>
+        <button class="lang-toggle-btn" onclick="setLanguage('en', this)">
+            <i class="fas fa-globe"></i> English
+        </button>
+    </div>
+
+    <div class="container" id="cv-content">
+        <!-- Arabic Content -->
+        <div class="lang-ar">
+            <!-- Header Section -->
+            <header class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-2">أحمد محمد السيد توحيد</h1>
+                <p class="text-lg text-gray-600 mb-4">مصمم UI/UX</p>
+                <div class="flex flex-wrap justify-center gap-4 text-gray-700 contact-info mb-5">
+                    <span>مصر، المنصورة</span>
+                </div>
+                    <div class="flex flex-wrap justify-center gap-4 text-gray-700 contact-info">
+                        <a href="https://wa.me/message/SLDNRX4OJJAFG1">
+                            <span>01501021670</span>
+                        </a>
+                        <span>|</span>
+                        <a href="mailto:ahmadtawheed74@gmail.com">ahmadtawheed74@gmail.com</a>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 text-gray-700 contact-info">
+                        <a href="https://www.linkedin.com/in/ahmed-tawheed-165335252?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">LinkedIn</a>
+                        <span>|</span>
+                        <a href="https://www.behance.net/ahmadtawheedgd" target="_blank">Behance</a>
+                        <span>|</span>
+                        <a href="https://github.com/ahmadTawheed" target="_blank">GitHub</a>
+                    </div>
+            </header>
+
+            <!-- Professional Summary -->
+            <section class="mb-8">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-user-tie"></i> الملخص المهني</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    مصمم UI/UX شغوف ومبدع، أمتلك خبرة عملية في تحويل الأفكار إلى تجارب مستخدم سهلة وجذابة. لدي فهم عميق لمراحل تصميم المنتج من البحث الأولي وتحديد الهوية البصرية، مرورًا بدراسة تجربة المستخدم وتغذية بصرية شاملة، وصولاً إلى تنفيذ واجهات مستخدم استثنائية. أجمع بين الحس الفني القوي والمهارات التقنية المتعددة، مما يمكنني من تقديم حلول تصميمية متكاملة ومبتكرة تلبي احتياجات المستخدم وأهداف العمل. أسعى دائمًا للتعلم والتطور، وأبحث عن فرصة للانضمام إلى فريق عمل ديناميكي حيث يمكنني المساهمة بخبراتي وشغفي في بناء منتجات رقمية مؤثرة.
+                </p>
+            </section>
+
+            <!-- Work Experience -->
+            <section class="mb-8">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-briefcase"></i> الخبرات العملية</h2>
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">مصمم UI/UX مستقل</h3>
+                    <p class="text-gray-600 mb-2">[3/7/2025] – [8/7/2025]</p>
+                    <ul class="list-disc list-inside text-gray-700 pr-5">
+                        <li>إنشاء هوية بصرية للتطبيق.</li>
+                        <li>تصميم الواجهة الامامية للتطبيق.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Key Projects -->
+            <section class="mb-8">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-project-diagram"></i> المشاريع البارزة</h2>
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">تطبيق "كتابي" - تطبيق لبيع الكتب</h3>
+                    <p class="text-gray-600 mb-2">**الدور:** مصمم UI/UX رئيسي.</p>
+                    <p class="font-medium mb-1">المسؤوليات والإنجازات:</p>
+                    <ul class="list-disc list-inside text-gray-700 pr-5">
+                        <li>تطوير الهوية البصرية الكاملة للتطبيق، بما في ذلك اختيار الألوان وتصميم الشعار، لضمان تجربة بصرية متناسقة وجذابة.</li>
+                        <li>إجراء بحث مكثف وتحليل لتغذية بصرية لدراسة تجارب المستخدمين المنافسة وأفضل الممارسات في السوق.</li>
+                        <li>تصميم تجربة المستخدم (UX) الشاملة للتطبيق، مع التركيز على سهولة التصفح وعمليات الشراء السلسة.</li>
+                        <li>بناء واجهات المستخدم (UI) تفاعلية وجذابة لجميع أقسام التطبيق، مما أدى إلى تجربة مستخدم بديهية وممتعة.</li>
+                    </ul>
+                </div>
+
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">منصة الخدمات الزراعية - مشروع شخصي</h3>
+                    <p class="text-gray-600 mb-2">**الدور:** مصمم ومطور شامل (UI/UX Designer & Developer).</p>
+                    <p class="font-medium mb-1">المسؤوليات والإنجازات:</p>
+                    <ul class="list-disc list-inside text-gray-700 pr-5">
+                        <li>تصميم تجربة المستخدم (UX) وواجهة المستخدم (UI) لمنصة تقدم خدمات متخصصة في المجال الزراعي، مع مراعاة احتياجات المزارعين والمستفيدين.</li>
+                        <li>القيام ببرمجة الواجهة الأمامية (Frontend Development) للمنصة، مما يضمن تحويل التصميمات إلى منتج وظيفي بالكامل.</li>
+                        <li>تطبيق مفاهيم التصميم البديهي والمرئي الجذاب لإنشاء تجربة مستخدم فعالة ومُرضية في مجال غير تقليدي.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Skills -->
+            <section class="mb-8">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-tools"></i> المهارات</h2>
+                <div class="mb-4 skill-group-container">
+                    <h3 class="text-xl font-semibold mb-2">تصميم UI/UX:</h3>
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <span class="skill-badge">تصميم واجهة المستخدم</span>
+                        <span class="skill-badge">تصميم تجربة المستخدم</span>
+                        <span class="skill-badge">بحث المستخدم</span>
+                        <span class="skill-badge">اختبار قابلية الاستخدام</span>
+                        <span class="skill-badge">تصميم التفاعل</span>
+                        <span class="skill-badge">تصميم الهوية البصرية</span>
+                        <span class="skill-badge">التفكير التصميمي</span>
+                        <span class="skill-badge">النماذج الأولية</span>
+                        <span class="skill-badge">تصميم الجرافيك</span>
+                    </div>
+                </div>
+                <div class="mb-4 skill-group-container">
+                    <h3 class="text-xl font-semibold mb-2">برامج التصميم:</h3>
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <span class="skill-badge">Photoshop</span>
+                        <span class="skill-badge">Illustrator</span>
+                        <span class="skill-badge">XD</span>
+                        <span class="skill-badge">Figma</span>
+                    </div>
+                </div>
+                <div class="mb-4 skill-group-container">
+                    <h3 class="text-xl font-semibold mb-2">المهارات التقنية:</h3>
+                    <p class="text-gray-700 mb-2">**لغات البرمجة:**</p>
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <span class="skill-badge">C++</span>
+                        <span class="skill-badge">JavaScript</span>
+                        <span class="skill-badge">Dart</span>
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">PHP</span>
+                        <span class="skill-badge">SQL</span>
+                    </div>
+                    <p class="text-gray-700 mt-2 mb-2">**تطوير الويب:**</p>
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <span class="skill-badge">HTML</span>
+                        <span class="skill-badge">CSS</span>
+                        <span class="skill-badge">JS</span>
+                        <span class="skill-badge">React.js</span>
+                        <span class="skill-badge">Next.js</span>
+                    </div>
+                </div>
+                <div class="skill-group-container">
+                    <h3 class="text-xl font-semibold mb-2">المهارات الشخصية (Soft Skills):</h3>
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <span class="skill-badge">القيادة</span>
+                        <span class="skill-badge">حل المشكلات</span>
+                        <span class="skill-badge">التفكير النقدي</span>
+                        <span class="skill-badge">التواصل الفعال</span>
+                        <span class="skill-badge">العمل الجماعي</span>
+                        <span class="skill-badge">إدارة الوقت</span>
+                        <span class="skill-badge">الإبداع</span>
+                        <span class="skill-badge">التكيف</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section class="mb-8">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-graduation-cap"></i> التعليم</h2>
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">بكالريوس في العلوم الزراعية</h3>
+                    <p class="text-gray-600">كلية الزراعة جامعة المنصورة (2026)</p>
+                </div>
+            </section>
+
+            <!-- Languages -->
+            <section>
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-language"></i> اللغات</h2>
+                <ul class="list-disc list-inside text-gray-700 pr-5">
+                    <li>العربية: اللغة الأم</li>
+                    <li>الإنجليزية: مستوى متوسط</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- English Content -->
+        <div class="lang-en">
+            <!-- Header Section -->
+            <header class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-2">Ahmed Mohamed Elsayed Tawheed</h1>
+                <p class="text-lg text-gray-600 mb-4">UI/UX Designer</p>
+                <div class="flex flex-wrap justify-center gap-4 text-gray-700 contact-info mb-5">
+                    <span>Mansoura, Egypt</span>
+                </div>
+                    <div class="flex flex-wrap justify-center gap-4 text-gray-700 contact-info">
+                        <a href="https://wa.me/message/SLDNRX4OJJAFG1">
+                            <span>01501021670</span>
+                        </a>
+                        <span>|</span>
+                        <a href="mailto:ahmadtawheed74@gmail.com">ahmadtawheed74@gmail.com</a>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 text-gray-700 contact-info">
+                        <a href="https://www.linkedin.com/in/ahmed-tawheed-165335252?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">LinkedIn</a>
+                        <span>|</span>
+                        <a href="https://www.behance.net/ahmadtawheedgd" target="_blank">Behance</a>
+                        <span>|</span>
+                        <a href="https://github.com/ahmadTawheed" target="_blank">GitHub</a>
+                    </div>
+            </header>
+
+            <!-- Professional Summary -->
+            <section class="mb-8" dir="ltr">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-user-tie"></i> Professional Summary</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    A passionate and creative UI/UX Designer with practical experience in transforming ideas into intuitive and engaging user experiences. I possess a deep understanding of the product design lifecycle, from initial research and visual identity definition, through user experience study and comprehensive visual feedback, to the implementation of exceptional user interfaces. I combine a strong artistic sense with diverse technical skills, enabling me to deliver integrated and innovative design solutions that meet user needs and business objectives. I am always seeking to learn and grow, and I am looking for an opportunity to join a dynamic team where I can contribute my expertise and passion to building impactful digital products.
+                </p>
+            </section>
+
+            <!-- Work Experience -->
+            <section class="mb-8" dir="ltr">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-briefcase"></i> Work Experience</h2>
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">Freelance UI/UX Designer</h3>
+                    <p class="text-gray-600 mb-2">[March 7, 2025] – [August 8, 2025]</p>
+                    <ul class="list-disc list-inside text-gray-700 pl-5">
+                        <li>Created the visual identity for an application.</li>
+                        <li>Designed the front-end interface of the application.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Key Projects -->
+            <section class="mb-8" dir="ltr">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-project-diagram"></i> Key Projects</h2>
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">"Kitabi" App - Book Selling Application</h3>
+                    <p class="text-gray-600 mb-2">**Role:** Lead UI/UX Designer.</p>
+                    <p class="font-medium mb-1">Responsibilities & Achievements:</p>
+                    <ul class="list-disc list-inside text-gray-700 pl-5">
+                        <li>Developed the complete visual identity for the application, including color selection and logo design, to ensure a consistent and attractive visual experience.</li>
+                        <li>Conducted extensive research and visual feedback analysis to study competing user experiences and market best practices.</li>
+                        <li>Designed the comprehensive User Experience (UX) for the application, focusing on ease of navigation and smooth purchasing processes.</li>
+                        <li>Built interactive and appealing User Interfaces (UI) for all sections of the application, مما أدى إلى تجربة مستخدم بديهية وممتعة.</li>
+                    </ul>
+                </div>
+
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">Agricultural Services Platform - Personal Project</h3>
+                    <p class="text-gray-600 mb-2">**Role:** Comprehensive Designer & Developer (UI/UX Designer & Developer).</p>
+                    <p class="font-medium mb-1">Responsibilities & Achievements:</p>
+                    <ul class="list-disc list-inside text-gray-700 pl-5">
+                        <li>Designed the User Experience (UX) and User Interface (UI) for a platform offering specialized services in the agricultural sector, considering the needs of farmers and beneficiaries.</li>
+                        <li>Performed Front-end Development for the platform, ensuring the conversion of designs into a fully functional product.</li>
+                        <li>Applied intuitive and visually appealing design concepts to create an effective and satisfying user experience in an unconventional field.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Skills -->
+            <section class="mb-8" dir="ltr">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-tools"></i> Skills</h2>
+                <div class="mb-4 skill-group-container">
+                    <h3 class="text-xl font-semibold mb-2">UI/UX Design:</h3>
+                    <div class="flex flex-wrap gap-2 justify-start">
+                        <span class="skill-badge">User Interface Design</span>
+                        <span class="skill-badge">User Experience Design</span>
+                        <span class="skill-badge">User Research</span>
+                        <span class="skill-badge">Usability Testing</span>
+                        <span class="skill-badge">Interaction Design</span>
+                        <span class="skill-badge">Visual Identity Design</span>
+                        <span class="skill-badge">Design Thinking</span>
+                        <span class="skill-badge">Prototyping</span>
+                        <span class="skill-badge">Graphic Design</span>
+                    </div>
+                </div>
+                <div class="mb-4 skill-group-container">
+                    <h3 class="text-xl font-semibold mb-2">Design Software:</h3>
+                    <div class="flex flex-wrap gap-2 justify-start">
+                        <span class="skill-badge">Photoshop</span>
+                        <span class="skill-badge">Illustrator</span>
+                        <span class="skill-badge">XD</span>
+                        <span class="skill-badge">Figma</span>
+                    </div>
+                </div>
+                <div class="mb-4 skill-group-container">
+                    <h3 class="text-xl font-semibold mb-2">Technical Skills:</h3>
+                    <p class="text-gray-700 mb-2">**Programming Languages:**</p>
+                    <div class="flex flex-wrap gap-2 justify-start">
+                        <span class="skill-badge">C++</span>
+                        <span class="skill-badge">JavaScript</span>
+                        <span class="skill-badge">Dart</span>
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">PHP</span>
+                        <span class="skill-badge">SQL</span>
+                    </div>
+                    <p class="text-gray-700 mt-2 mb-2">**Web Development:**</p>
+                    <div class="flex flex-wrap gap-2 justify-start">
+                        <span class="skill-badge">HTML</span>
+                        <span class="skill-badge">CSS</span>
+                        <span class="skill-badge">JS</span>
+                        <span class="skill-badge">React.js</span>
+                        <span class="skill-badge">Next.js</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Soft Skills:</h3>
+                    <div class="flex flex-wrap gap-2 justify-start">
+                        <span class="skill-badge">Leadership</span>
+                        <span class="skill-badge">Problem-Solving</span>
+                        <span class="skill-badge">Critical Thinking</span>
+                        <span class="skill-badge">Effective Communication</span>
+                        <span class="skill-badge">Teamwork</span>
+                        <span class="skill-badge">Time Management</span>
+                        <span class="skill-badge">Creativity</span>
+                        <span class="skill-badge">Adaptability</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section class="mb-8" dir="ltr">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-graduation-cap"></i> Education</h2>
+                <div class="project-item">
+                    <h3 class="text-xl font-semibold mb-1">Bachelor of Agricultural Sciences</h3>
+                    <p class="text-gray-600">Faculty of Agriculture, Mansoura University (2026)</p>
+                </div>
+            </section>
+
+            <!-- Languages -->
+            <section dir="ltr">
+                <h2 class="text-2xl section-title mb-4"><i class="fas fa-language"></i> Languages</h2>
+                <ul class="list-disc list-inside text-gray-700 pl-5">
+                    <li>Arabic: Native</li>
+                    <li>English: Intermediate</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <!-- PDF Download Button -->
+    <div class="flex justify-center mt-8">
+        <a href="https://drive.google.com/file/d/1GHsCtULoQMY44B-G_Ab_3iJ6Q6wdJg79/view?usp=sharing">
+            <button class="download-btn">
+                <i class="fas fa-file-pdf"></i> Download CV
+            </button>
+        </a>
+    </div>
+
+    <script>
+        // Function to switch language
+        function setLanguage(lang, clickedButton = null) {
+            document.body.setAttribute('lang', lang);
+            document.body.style.direction = (lang === 'ar') ? 'rtl' : 'ltr';
+
+            // Update active button styling
+            document.querySelectorAll('.lang-toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            } else {
+                // For initial load or calls without a specific button target
+                const targetButton = document.querySelector(`.lang-toggle-btn[onclick*="setLanguage('${lang}')"]`);
+                if (targetButton) {
+                    targetButton.classList.add('active');
+                }
+            }
+
+            // Adjust text alignment for skills section based on language
+            document.querySelectorAll('.skill-group-container .flex-wrap').forEach(div => {
+                if (lang === 'ar') {
+                    div.classList.remove('justify-start');
+                    div.classList.add('justify-end');
+                } else {
+                    div.classList.remove('justify-end');
+                    div.classList.add('justify-start');
+                }
+            });
+        }
+
+        // Function to download PDF
+        function downloadPDF() {
+            const element = document.getElementById('cv-content');
+            const currentLang = document.body.getAttribute('lang');
+            const filename = (currentLang === 'ar') ? 'السيرة الذاتية - أحمد محمد.pdf' : 'Ahmed Mohamed - CV.pdf';
+
+            html2pdf(element, {
+                margin: 1,
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            });
+        }
+
+        // Initialize language on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setLanguage('ar'); // Default to Arabic
+        });
+    </script>
+</body>
+</html>
